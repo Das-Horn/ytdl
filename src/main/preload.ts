@@ -21,5 +21,8 @@ contextBridge.exposeInMainWorld('electron', {
         ipcRenderer.once(channel, (_event, ...args) => func(...args));
       }
     },
+    getVideo: (url: string) => {
+      ipcRenderer.send('ipc-video', url);
+    },
   },
 });

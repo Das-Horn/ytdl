@@ -1,6 +1,7 @@
 /* eslint import/prefer-default-export: off, import/no-mutable-exports: off */
 import { URL } from 'url';
 import path from 'path';
+import youtubeDlExec from 'youtube-dl-exec';
 
 export let resolveHtmlPath: (htmlFileName: string) => string;
 
@@ -15,4 +16,19 @@ if (process.env.NODE_ENV === 'development') {
   resolveHtmlPath = (htmlFileName: string) => {
     return `file://${path.resolve(__dirname, '../renderer/', htmlFileName)}`;
   };
+}
+
+function downloadAudio(url: string) {
+  youtubeDlExec(url, { audioFormat: 'mp3' });
+}
+
+export function downloadVideo(url: string) {
+  youtubeDlExec(url)
+    // eslint-disable-next-line promise/always-return
+    .then((out: any) => {
+      console.log(out);
+    })
+    .catch((err: any) => {
+      console.log(err);
+    });
 }
