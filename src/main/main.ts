@@ -13,7 +13,7 @@ import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
-import { resolveHtmlPath, downloadVideo } from './util';
+import { resolveHtmlPath, downloadVideo, downloadVideoSave } from './util';
 
 export default class AppUpdater {
   constructor() {
@@ -35,6 +35,11 @@ ipcMain.on('ipc-video', async (event, arg) => {
   const resp = await downloadVideo(arg);
   console.log(resp);
   event.reply('ipc-video', resp);
+});
+
+ipcMain.on('ipc-video-save', async (event, arg) => {
+  const resp = await downloadVideoSave(arg);
+  event.reply('ipc-video-save', resp);
 });
 
 if (process.env.NODE_ENV === 'production') {

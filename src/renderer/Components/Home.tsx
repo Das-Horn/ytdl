@@ -3,7 +3,7 @@ import VideoForm from './VideoForm';
 
 function Home() {
   return (
-    <Group>
+    <Group direction="column">
       <VideoForm />
       <Text>Help</Text>
     </Group>

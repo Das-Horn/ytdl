@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { YtResponse } from 'youtube-dl-exec';
 import placeholder from '../../../assets/icon.png';
 
-let changeInt;
+let changeInt: NodeJS.Timeout;
 let vidTimeout: NodeJS.Timeout;
 
 function VideoForm() {
@@ -33,8 +33,9 @@ function VideoForm() {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const url: HTMLInputElement = document.querySelector('#UrlIn')!;
     const urlString: string = url.value;
-    // setLoad(true);
-    // setValid(false);
+    window.electron.ipcRenderer.saveVideo(urlString);
+    setLoad(true);
+    setValid(false);
   };
 
   const handleUrlEntry = () => {
@@ -59,7 +60,14 @@ function VideoForm() {
     window.sessionStorage.setItem('Thumb', '');
   };
 
+  try {
+    clearInterval(changeInt);
+  } catch {
+    console.warn('Already Cleared');
+  }
+
   changeInt = setInterval(vidCallback, 2500);
+
   return (
     <Card withBorder radius="md">
       <Center>

@@ -2,6 +2,7 @@
 import { URL } from 'url';
 import path from 'path';
 import youtubeDlExec from 'youtube-dl-exec';
+import os from 'os';
 
 export let resolveHtmlPath: (htmlFileName: string) => string;
 
@@ -18,6 +19,13 @@ if (process.env.NODE_ENV === 'development') {
   };
 }
 
+// Utility Functions
+function getUserHomeDirectory() {
+  const homeDir: string = os.homedir();
+  return `${homeDir}\\Videos\\YTDL`;
+}
+
+// Youtube Downloading Functions
 function downloadAudio(url: string) {
   youtubeDlExec(url, { audioFormat: 'mp3' });
 }
@@ -26,6 +34,17 @@ export async function downloadVideo(url: string) {
   const out = await youtubeDlExec(url, {
     skipDownload: true,
     dumpSingleJson: true,
+  });
+  return out;
+}
+
+export async function downloadVideoSave(url: string) {
+  console.log(`Downloading Video\nPath:\t${getUserHomeDirectory()}`);
+  const out = await youtubeDlExec(url, {
+    // skipDownload: false,
+    // dumpSingleJson: true,
+    referer: url,
+    output: `${getUserHomeDirectory()}\\out.mp4`,
   });
   return out;
 }

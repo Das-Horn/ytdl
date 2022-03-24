@@ -1,4 +1,4 @@
-import { AppShell, Header, MantineProvider } from '@mantine/core';
+import { AppShell, Center, Header, MantineProvider } from '@mantine/core';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import icon from '../../assets/icon.svg';
 import './App.css';
@@ -15,7 +15,9 @@ const MainPage = () => {
           </Header>
         }
       >
-        <Home />
+        <Center>
+          <Home />
+        </Center>
       </AppShell>
     </MantineProvider>
   );

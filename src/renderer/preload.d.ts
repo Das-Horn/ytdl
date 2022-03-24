@@ -8,6 +8,7 @@ declare global {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         once(channel: string, func: (...args: any[]) => void): void;
         getVideo(url: string): void;
+        saveVideo(url: string): void;
       };
     };
   }
