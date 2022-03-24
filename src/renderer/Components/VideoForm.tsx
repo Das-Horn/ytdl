@@ -9,38 +9,83 @@ import {
   TextInput,
 } from '@mantine/core';
 import { useState } from 'react';
+import { YtResponse } from 'youtube-dl-exec';
 import placeholder from '../../../assets/icon.png';
-import UrlInput from './UrlInput';
+
+let changeInt;
+let vidTimeout: NodeJS.Timeout;
 
 function VideoForm() {
   const [thumb, setThumb] = useState('');
   const [title, setTitle] = useState('');
+  const [load, setLoad] = useState(false);
   const [isValid, setValid] = useState(false);
+
+  const vidCallback = () => {
+    console.log('Updating Form');
+    setTitle(window.sessionStorage.getItem('Title') || '');
+    setThumb(window.sessionStorage.getItem('Thumb') || '');
+    setValid(true);
+  };
 
   const handleDLBut = () => {
     // console.log('works');
-    window.electron.ipcRenderer.getVideo('https://youtu.be/1Z6CHioIn3s');
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const url: HTMLInputElement = document.querySelector('#UrlIn')!;
+    const urlString: string = url.value;
+    // setLoad(true);
+    // setValid(false);
   };
 
-  const handleThumbChange = (url: string) => {
-    setThumb(url);
+  const handleUrlEntry = () => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    clearTimeout(vidTimeout);
+    const url: HTMLInputElement = document.querySelector('#UrlIn')!;
+    const urlString: string = url.value;
+    if (urlString !== '') {
+      setValid(true);
+    } else {
+      setValid(false);
+    }
+
+    vidTimeout = setTimeout(() => {
+      window.electron.ipcRenderer.getVideo(urlString);
+    }, 1000);
+
+    setTitle('');
+    setThumb('');
+    setValid(false);
+    window.sessionStorage.setItem('Title', '');
+    window.sessionStorage.setItem('Thumb', '');
   };
+
+  changeInt = setInterval(vidCallback, 2500);
   return (
     <Card withBorder radius="md">
-      <Image
-        src={thumb === '' ? placeholder : thumb}
-        alt="Video Thumbnail"
-        height={200}
-        width={200}
-      />
-      <Title>{title === '' ? 'Video Title' : title}</Title>
+      <Center>
+        <Image
+          src={thumb === '' || null ? placeholder : thumb}
+          alt="Video Thumbnail"
+          // height={200}
+          width={350}
+          radius="md"
+        />
+      </Center>
+      <Title>{title === '' || null ? '...' : title}</Title>
       <TextInput
+        id="UrlIn"
         height="md"
         label="Video Url"
         placeholder="https://youtube.com/ShjfSa"
+        onChange={() => handleUrlEntry()}
       />
       <Center p={5}>
-        <Button onClick={handleDLBut} color="red" disabled={isValid}>
+        <Button
+          loading={load}
+          onClick={handleDLBut}
+          color="red"
+          disabled={!isValid}
+        >
           Download
         </Button>
       </Center>

@@ -22,13 +22,10 @@ function downloadAudio(url: string) {
   youtubeDlExec(url, { audioFormat: 'mp3' });
 }
 
-export function downloadVideo(url: string) {
-  youtubeDlExec(url)
-    // eslint-disable-next-line promise/always-return
-    .then((out: any) => {
-      console.log(out);
-    })
-    .catch((err: any) => {
-      console.log(err);
-    });
+export async function downloadVideo(url: string) {
+  const out = await youtubeDlExec(url, {
+    skipDownload: true,
+    dumpSingleJson: true,
+  });
+  return out;
 }

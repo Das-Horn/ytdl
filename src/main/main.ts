@@ -32,8 +32,9 @@ ipcMain.on('ipc-example', async (event, arg) => {
 });
 
 ipcMain.on('ipc-video', async (event, arg) => {
-  console.log(`Downloading video ${arg}`);
-  downloadVideo(arg);
+  const resp = await downloadVideo(arg);
+  console.log(resp);
+  event.reply('ipc-video', resp);
 });
 
 if (process.env.NODE_ENV === 'production') {
