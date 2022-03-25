@@ -38,7 +38,7 @@ ipcMain.on('ipc-video', async (event, arg) => {
 });
 
 ipcMain.on('ipc-video-save', async (event, arg) => {
-  const resp = await downloadVideoSave(arg);
+  const resp = await downloadVideoSave(arg, 'out');
   event.reply('ipc-video-save', resp);
 });
 

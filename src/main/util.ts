@@ -38,13 +38,13 @@ export async function downloadVideo(url: string) {
   return out;
 }
 
-export async function downloadVideoSave(url: string) {
+export async function downloadVideoSave(url: string, title: string) {
   console.log(`Downloading Video\nPath:\t${getUserHomeDirectory()}`);
   const out = await youtubeDlExec(url, {
     // skipDownload: false,
     // dumpSingleJson: true,
     referer: url,
-    output: `${getUserHomeDirectory()}\\out.mp4`,
+    output: `${getUserHomeDirectory()}\\${title}`,
   });
   return out;
 }
