@@ -26,6 +26,9 @@ function VideoForm() {
     setTitle(window.sessionStorage.getItem('Title') || '');
     setThumb(window.sessionStorage.getItem('Thumb') || '');
     setValid(true);
+    if (window.sessionStorage.getItem('butLoad') === 'f') {
+      setLoad(false);
+    }
   };
 
   const handleDLBut = () => {
@@ -36,6 +39,7 @@ function VideoForm() {
     window.electron.ipcRenderer.saveVideo(urlString);
     setLoad(true);
     setValid(false);
+    window.sessionStorage.setItem('butLoad', 't');
   };
 
   const handleUrlEntry = () => {

@@ -34,7 +34,7 @@ export async function downloadVideo(url: string) {
   const out = await youtubeDlExec(url, {
     skipDownload: true,
     dumpSingleJson: true,
-  });
+  }).catch(console.log('error getting info'));
   return out;
 }
 
@@ -44,7 +44,7 @@ export async function downloadVideoSave(url: string, title: string) {
     // skipDownload: false,
     // dumpSingleJson: true,
     referer: url,
-    output: `${getUserHomeDirectory()}\\${title}`,
+    // output: `${getUserHomeDirectory()}\\${title}`,yar
   });
   return out;
 }

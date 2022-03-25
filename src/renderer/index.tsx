@@ -19,5 +19,6 @@ window.electron.ipcRenderer.on('ipc-video', (arg: YtResponse) => {
 
 window.electron.ipcRenderer.on('ipc-video-save', (arg) => {
   console.log(arg);
+  window.sessionStorage.setItem('butLoad', 'f');
 });
 // window.electron.ipcRenderer.myPing();
